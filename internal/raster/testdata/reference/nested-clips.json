@@ -1,0 +1,65 @@
+{
+  "width": 320,
+  "height": 240,
+  "background": "#000000",
+  "layers": [
+    {
+      "id": "outer",
+      "kind": "group",
+      "transform": {
+        "x": 100,
+        "y": 60,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "degrees": 0.0
+      },
+      "opacity": 1.0,
+      "children": [
+        {
+          "id": "inner",
+          "kind": "group",
+          "transform": {
+            "x": 10,
+            "y": 5,
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "degrees": 0.0
+          },
+          "opacity": 1.0,
+          "children": [
+            {
+              "id": "fill",
+              "kind": "rectangle",
+              "width": 400,
+              "height": 400,
+              "transform": {
+                "x": 0.0,
+                "y": 0.0,
+                "scaleX": 1.0,
+                "scaleY": 1.0,
+                "degrees": 0.0
+              },
+              "opacity": 1.0,
+              "fill": {
+                "kind": "solid",
+                "color": "#CC3355"
+              }
+            }
+          ],
+          "clip": {
+            "x": 0,
+            "y": 0,
+            "width": 60,
+            "height": 30
+          }
+        }
+      ],
+      "clip": {
+        "x": 20,
+        "y": 10,
+        "width": 80,
+        "height": 70
+      }
+    }
+  ]
+}

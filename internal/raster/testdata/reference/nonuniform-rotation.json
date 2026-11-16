@@ -1,0 +1,25 @@
+{
+  "width": 320,
+  "height": 240,
+  "background": "#000000",
+  "layers": [
+    {
+      "id": "plate",
+      "kind": "rectangle",
+      "width": 40,
+      "height": 20,
+      "transform": {
+        "x": 200,
+        "y": 40,
+        "scaleX": 2,
+        "scaleY": 3,
+        "degrees": 90
+      },
+      "opacity": 1.0,
+      "fill": {
+        "kind": "solid",
+        "color": "#FFD040"
+      }
+    }
+  ]
+}

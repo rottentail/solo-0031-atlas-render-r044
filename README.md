@@ -36,6 +36,18 @@ python3 scripts/walkthrough.py --workflow compare-renders
 
 同一幂等键和同一请求返回原任务；同键不同请求返回 409。快照包含引用素材的字节，后续场景编辑或素材退役不改变它。撤回快照会阻止新工作，已接受的任务仍使用固定输入。任务取消和结果提交竞争同一个持久状态；终态完成后不可取消。
 
+## 验证套件
+
+```sh
+go test ./...                                  # 单元、性质与参考样本验证
+go test ./internal/raster -v -run Reference    # 逐样本重放参考 PNG
+python3 scripts/reference_render.py --check-only  # 重新推导参考样本的几何关系
+```
+
+`internal/raster/testdata/reference` 保存由 `scripts/reference_render.py` 独立 Python 实现生成的参考场景、scale 1/2 基准 PNG 与 `manifest.json`。该脚本不调用 Go 代码，按规格重新实现矩阵、包含判定与合成语义，并为每个样本从几何本身推导覆盖率、映射中心与角点包围盒；推导不成立的样本不会被写出。Go 侧把同一场景走生产渲染路径，逐像素对比基准 PNG，并复核测量掩码仍满足这些几何关系，因此失败会指出具体场景、输出倍数和偏离的坐标量，而不是只报摘要变化。
+
+参考样本覆盖旋转、非等比缩放、祖先裁剪、嵌套裁剪、图层顺序、椭圆与多边形、以及合法边缘恰好落在像素中心的情况。`properties_test.go` 额外验证输出倍数的关系（轴向几何下每个 scale 1 像素对应精确的 2x2 块）、祖先裁剪的单调性、裁剪平移等变性、非等比缩放下的旋转面积关系，以及随机场景与独立包含判定的逐像素一致性。`budget_test.go`、`internal/service/capacity_test.go`、`internal/engine/cancel_test.go` 实测工作预算、队列容量与取消时限（取消提交后 750ms 内必须停止，实测为数毫秒）。
+
 ## 范围与限制
 
 画布每边最多 1536 像素，输出缩放为 1 或 2；场景不超过 200 图层、8 层嵌套。PNG 素材每边最多 1024 像素、输入最多 2 MiB。编译后的工作量不得超过四千万个图层像素，队列最多接受 64 个未结束任务。
@@ -44,4 +56,4 @@ python3 scripts/walkthrough.py --workflow compare-renders
 
 持久化使用完整 JSON 状态的原子替换，保留全部任务与快照，事件只保留最近 500 条。适合中小规模、单写实例工作负载。清理结果只释放 PNG 字节，仍保留任务事实和摘要。进程重启可恢复任务；突然断电的文件系统耐久性不作额外保证。
 
-测试处于 deferred 阶段，基线未包含自动化测试套件或 `test_command`。生产工作流检查、构建与静态检查已单独提供。接口和持久状态的规则详见 `PROJECT_SPEC.md`、`docs/api.md`、`docs/operations.md`。
+接口和持久状态的规则详见 `PROJECT_SPEC.md`、`docs/api.md`、`docs/operations.md`。

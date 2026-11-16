@@ -6,7 +6,8 @@
     ".go"
   ],
   "build_command": "go build ./...",
-  "testing": "deferred",
+  "test_command": "go test ./...",
+  "testing": "enabled",
   "workflow_checks": [
     {
       "workflow_id": "create-scene",

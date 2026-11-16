@@ -1,0 +1,45 @@
+{
+  "width": 320,
+  "height": 240,
+  "background": "#000000",
+  "layers": [
+    {
+      "id": "frame",
+      "kind": "group",
+      "transform": {
+        "x": 80,
+        "y": 50,
+        "scaleX": 1.5,
+        "scaleY": 0.75,
+        "degrees": 25
+      },
+      "opacity": 1.0,
+      "children": [
+        {
+          "id": "fill",
+          "kind": "rectangle",
+          "width": 400,
+          "height": 300,
+          "transform": {
+            "x": 0.0,
+            "y": 0.0,
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "degrees": 0.0
+          },
+          "opacity": 1.0,
+          "fill": {
+            "kind": "solid",
+            "color": "#22CC88"
+          }
+        }
+      ],
+      "clip": {
+        "x": 20,
+        "y": 10,
+        "width": 120,
+        "height": 100
+      }
+    }
+  ]
+}

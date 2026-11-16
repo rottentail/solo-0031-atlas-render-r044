@@ -1,0 +1,25 @@
+{
+  "width": 128,
+  "height": 96,
+  "background": "#000000",
+  "layers": [
+    {
+      "id": "edge",
+      "kind": "rectangle",
+      "width": 100,
+      "height": 60,
+      "transform": {
+        "x": 10.5,
+        "y": 20.5,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "degrees": 360
+      },
+      "opacity": 1.0,
+      "fill": {
+        "kind": "solid",
+        "color": "#7FE0C0"
+      }
+    }
+  ]
+}

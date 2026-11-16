@@ -1,0 +1,376 @@
+{
+  "generator": "scripts/reference_render.py",
+  "schema": 1,
+  "samples": [
+    {
+      "name": "quarter-turn",
+      "scene": "quarter-turn.json",
+      "golden": {
+        "1": "quarter-turn.s1.png",
+        "2": "quarter-turn.s2.png"
+      },
+      "derivation": "Local x axis becomes world +y and local y becomes world -x; the 100x60 rect covers x [50,110), y [70,170), area 100*60 = 6000, center maps to (80,120).",
+      "relations": {
+        "1": {
+          "coverage": 6000.0,
+          "centroid": [
+            80.0,
+            120.0
+          ],
+          "boundary": 320.0,
+          "derivation": "world area = local area * |scaleX * scaleY| * scale^2; centroid = mapped local center",
+          "bbox": [
+            50,
+            70,
+            110,
+            170
+          ]
+        },
+        "2": {
+          "coverage": 24000.0,
+          "centroid": [
+            160.5,
+            240.5
+          ],
+          "boundary": 640.0,
+          "derivation": "world area = local area * |scaleX * scaleY| * scale^2; centroid = mapped local center",
+          "bbox": [
+            100,
+            140,
+            220,
+            340
+          ]
+        }
+      },
+      "tolerance": 0.0
+    },
+    {
+      "name": "nonuniform-scale",
+      "scene": "nonuniform-scale.json",
+      "golden": {
+        "1": "nonuniform-scale.s1.png",
+        "2": "nonuniform-scale.s2.png"
+      },
+      "derivation": "40x20 local rect scaled by (3, 0.5) becomes 120x10 at (30,50); area 1200.",
+      "relations": {
+        "1": {
+          "coverage": 1200.0,
+          "centroid": [
+            90.0,
+            55.0
+          ],
+          "boundary": 260.0,
+          "derivation": "world area = local area * |scaleX * scaleY| * scale^2; centroid = mapped local center",
+          "bbox": [
+            30,
+            50,
+            150,
+            60
+          ]
+        },
+        "2": {
+          "coverage": 4800.0,
+          "centroid": [
+            180.5,
+            110.5
+          ],
+          "boundary": 520.0,
+          "derivation": "world area = local area * |scaleX * scaleY| * scale^2; centroid = mapped local center",
+          "bbox": [
+            60,
+            100,
+            300,
+            120
+          ]
+        }
+      },
+      "tolerance": 0.0
+    },
+    {
+      "name": "nonuniform-rotation",
+      "scene": "nonuniform-rotation.json",
+      "golden": {
+        "1": "nonuniform-rotation.s1.png",
+        "2": "nonuniform-rotation.s2.png"
+      },
+      "derivation": "Scale first: 40x20 -> 80x60, rotate 90 degrees -> 60x80, translate to (140,40); area 40*20*2*3 = 4800, bbox [140,40,200,120].",
+      "relations": {
+        "1": {
+          "coverage": 4800,
+          "centroid": [
+            170.0,
+            80.0
+          ],
+          "boundary": 280.0,
+          "derivation": "world area = local area * |scaleX * scaleY| * scale^2; centroid = mapped local center",
+          "bbox": [
+            140,
+            40,
+            200,
+            120
+          ]
+        },
+        "2": {
+          "coverage": 19200,
+          "centroid": [
+            340.5,
+            160.5
+          ],
+          "boundary": 560.0,
+          "derivation": "world area = local area * |scaleX * scaleY| * scale^2; centroid = mapped local center",
+          "bbox": [
+            280,
+            80,
+            400,
+            240
+          ]
+        }
+      },
+      "tolerance": 0.0
+    },
+    {
+      "name": "combined-clip-rotation-scale",
+      "scene": "combined-clip-rotation-scale.json",
+      "golden": {
+        "1": "combined-clip-rotation-scale.s1.png",
+        "2": "combined-clip-rotation-scale.s2.png"
+      },
+      "derivation": "The group matrix (scale 1.5/0.75, rotate 25, translate 80/50) carries a 120x100 local clip; determinant 1.5*0.75 = 1.125 gives world area 13500. The 400x300 child overshoots every side, so coverage is the clip area and the centroid is the mapped clip center (80,60); scale 2 multiplies coverage by four.",
+      "relations": {
+        "1": {
+          "coverage": 13500.0,
+          "centroid": [
+            169.73911266606652,
+            141.49804182553316
+          ],
+          "boundary": 509.9999999999999,
+          "bbox": null,
+          "derivation": "clip local area * |group scaleX * scaleY| * scale^2; centroid = mapped clip center; child is oversized"
+        },
+        "2": {
+          "coverage": 54000.0,
+          "centroid": [
+            339.97822533213304,
+            283.49608365106633
+          ],
+          "boundary": 1019.9999999999998,
+          "bbox": null,
+          "derivation": "clip local area * |group scaleX * scaleY| * scale^2; centroid = mapped clip center; child is oversized"
+        }
+      },
+      "tolerance": 0.002
+    },
+    {
+      "name": "nested-clips",
+      "scene": "nested-clips.json",
+      "golden": {
+        "1": "nested-clips.s1.png",
+        "2": "nested-clips.s2.png"
+      },
+      "derivation": "Both clips must contain the mapped pixel center: the intersection is 50x25 at world (120,70), center (145,82.5), area 1250.",
+      "relations": {
+        "1": {
+          "coverage": 1250,
+          "centroid": [
+            145.0,
+            82.5
+          ],
+          "boundary": 150,
+          "bbox": [
+            120,
+            70,
+            170,
+            95
+          ],
+          "derivation": "outer clip world x [120,200) y [70,140); inner translation moves its clip to x [110,170) y [65,95); intersection x [120,170) y [70,95) = 50x25 = 1250; child 400x400 exceeds both"
+        },
+        "2": {
+          "coverage": 5000,
+          "centroid": [
+            290.5,
+            165.5
+          ],
+          "boundary": 300,
+          "bbox": [
+            240,
+            140,
+            340,
+            190
+          ],
+          "derivation": "outer clip world x [120,200) y [70,140); inner translation moves its clip to x [110,170) y [65,95); intersection x [120,170) y [70,95) = 50x25 = 1250; child 400x400 exceeds both"
+        }
+      },
+      "tolerance": 0.0
+    },
+    {
+      "name": "layer-order",
+      "scene": "layer-order.json",
+      "golden": {
+        "1": "layer-order.s1.png",
+        "2": "layer-order.s2.png"
+      },
+      "derivation": "Later layers paint over earlier ones: 3600 blue pixels and 6400 red pixels at scale 1, each count multiplied by four at scale 2.",
+      "relations": {
+        "1": {
+          "coverage": 10000,
+          "centroid": null,
+          "bbox": null,
+          "boundary": 0.0,
+          "colors": {
+            "#CC2222": 6400,
+            "#2222CC": 3600
+          },
+          "derivation": "red x [10,110) y [10,110) and blue x [50,110) y [50,110) overlap in 60x60; blue is later and opaque so it owns the overlap: 3600 blue, 10000-3600 = 6400 red"
+        },
+        "2": {
+          "coverage": 40000,
+          "centroid": null,
+          "bbox": null,
+          "boundary": 0.0,
+          "colors": {
+            "#CC2222": 25600,
+            "#2222CC": 14400
+          },
+          "derivation": "red x [10,110) y [10,110) and blue x [50,110) y [50,110) overlap in 60x60; blue is later and opaque so it owns the overlap: 3600 blue, 10000-3600 = 6400 red"
+        }
+      },
+      "tolerance": 0.0
+    },
+    {
+      "name": "edge-on-pixel-center",
+      "scene": "edge-on-pixel-center.json",
+      "golden": {
+        "1": "edge-on-pixel-center.s1.png",
+        "2": "edge-on-pixel-center.s2.png"
+      },
+      "derivation": "Left edge at x=10.5 and top at y=20.5 coincide with pixel centers 10 and 20; half-open bounds put those columns inside, giving exactly 100x60 = 6000 pixels.",
+      "relations": {
+        "1": {
+          "coverage": 6000.0,
+          "centroid": [
+            60.5,
+            50.5
+          ],
+          "boundary": 320.0,
+          "derivation": "world area = local area * |scaleX * scaleY| * scale^2; centroid = mapped local center",
+          "bbox": [
+            10,
+            20,
+            110,
+            80
+          ]
+        },
+        "2": {
+          "coverage": 24000.0,
+          "centroid": [
+            121.5,
+            101.5
+          ],
+          "boundary": 640.0,
+          "derivation": "world area = local area * |scaleX * scaleY| * scale^2; centroid = mapped local center",
+          "bbox": [
+            20,
+            40,
+            220,
+            160
+          ]
+        }
+      },
+      "tolerance": 0.0
+    },
+    {
+      "name": "edge-on-pixel-center-full-turn",
+      "scene": "edge-on-pixel-center-full-turn.json",
+      "golden": {
+        "1": "edge-on-pixel-center-full-turn.s1.png",
+        "2": "edge-on-pixel-center-full-turn.s2.png"
+      },
+      "derivation": "A 360 degree turn is the identity, so the same 6000-pixel edge must remain; a residual sin(2*pi) = -2.4e-16 would move the left edge and delete a pixel column.",
+      "relations": {
+        "1": {
+          "coverage": 6000.0,
+          "centroid": [
+            60.5,
+            50.5
+          ],
+          "boundary": 320.0,
+          "derivation": "world area = local area * |scaleX * scaleY| * scale^2; centroid = mapped local center",
+          "bbox": [
+            10,
+            20,
+            110,
+            80
+          ]
+        },
+        "2": {
+          "coverage": 24000.0,
+          "centroid": [
+            121.5,
+            101.5
+          ],
+          "boundary": 640.0,
+          "derivation": "world area = local area * |scaleX * scaleY| * scale^2; centroid = mapped local center",
+          "bbox": [
+            20,
+            40,
+            220,
+            160
+          ]
+        }
+      },
+      "tolerance": 0.0
+    },
+    {
+      "name": "ellipse",
+      "scene": "ellipse.json",
+      "golden": {
+        "1": "ellipse.s1.png",
+        "2": "ellipse.s2.png"
+      },
+      "derivation": "Unit-circle test in local space: coverage must match the analytic ellipse area within one percent.",
+      "relations": {
+        "1": {
+          "coverage": 7539.822368615503,
+          "centroid": null,
+          "bbox": null,
+          "boundary": 453.08693596555906,
+          "derivation": "semi-axes 60 and 40 -> area pi*60*40 = 7539.8; sampled pixel centers deviate only along the boundary"
+        },
+        "2": {
+          "coverage": 30159.289474462013,
+          "centroid": null,
+          "bbox": null,
+          "boundary": 906.1738719311181,
+          "derivation": "semi-axes 60 and 40 -> area pi*60*40 = 7539.8; sampled pixel centers deviate only along the boundary"
+        }
+      },
+      "tolerance": 0.01
+    },
+    {
+      "name": "polygon",
+      "scene": "polygon.json",
+      "golden": {
+        "1": "polygon.s1.png",
+        "2": "polygon.s2.png"
+      },
+      "derivation": "Even-odd fill of the triangle must cover its analytic area within one percent.",
+      "relations": {
+        "1": {
+          "coverage": 4050,
+          "centroid": null,
+          "bbox": null,
+          "boundary": 0.0,
+          "derivation": "shoelace area of (10,90),(50,0),(100,90) is 4050"
+        },
+        "2": {
+          "coverage": 16200,
+          "centroid": null,
+          "bbox": null,
+          "boundary": 0.0,
+          "derivation": "shoelace area of (10,90),(50,0),(100,90) is 4050"
+        }
+      },
+      "tolerance": 0.01
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "width": 320,
+  "height": 240,
+  "background": "#000000",
+  "layers": [
+    {
+      "id": "disc",
+      "kind": "ellipse",
+      "width": 120,
+      "height": 80,
+      "transform": {
+        "x": 40,
+        "y": 50,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "degrees": 0.0
+      },
+      "opacity": 1.0,
+      "fill": {
+        "kind": "solid",
+        "color": "#FFFFFF"
+      }
+    }
+  ]
+}
